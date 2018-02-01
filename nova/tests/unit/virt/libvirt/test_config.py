@@ -1194,12 +1194,12 @@ class LibvirtConfigGuestDiskBackingStoreTest(LibvirtConfigBaseTest):
     def test_config_network_parse(self):
         xml = """<backingStore type='network' index='1'>
                    <format type='qcow2'/>
-                   <source protocol='netfs' name='volume1/img1'>
+                   <source protocol='gluster' name='volume1/img1'>
                      <host name='host1' port='24007'/>
                    </source>
                    <backingStore type='network' index='2'>
                      <format type='qcow2'/>
-                     <source protocol='netfs' name='volume1/img2'>
+                     <source protocol='gluster' name='volume1/img2'>
                        <host name='host1' port='24007'/>
                      </source>
                      <backingStore/>
@@ -1212,7 +1212,7 @@ class LibvirtConfigGuestDiskBackingStoreTest(LibvirtConfigBaseTest):
         obj.parse_dom(xmldoc)
 
         self.assertEqual(obj.source_type, 'network')
-        self.assertEqual(obj.source_protocol, 'netfs')
+        self.assertEqual(obj.source_protocol, 'gluster')
         self.assertEqual(obj.source_name, 'volume1/img1')
         self.assertEqual(obj.source_hosts[0], 'host1')
         self.assertEqual(obj.source_ports[0], '24007')
@@ -2545,7 +2545,7 @@ class LibvirtConfigGuestSnapshotTest(LibvirtConfigBaseTest):
         disk.source_type = 'network'
         disk.source_hosts = ['host1']
         disk.source_ports = ['12345']
-        disk.source_protocol = 'netfs'
+        disk.source_protocol = 'glusterfs'
         disk.snapshot = 'external'
         disk.driver_name = 'qcow2'
         obj.add_disk(disk)
@@ -2561,7 +2561,7 @@ class LibvirtConfigGuestSnapshotTest(LibvirtConfigBaseTest):
               <name>Demo</name>
               <disks>
                <disk name='vda' snapshot='external' type='network'>
-                <source protocol='netfs' name='source-file'>
+                <source protocol='glusterfs' name='source-file'>
                  <host name='host1' port='12345'/>
                 </source>
                </disk>
